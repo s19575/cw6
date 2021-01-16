@@ -25,7 +25,7 @@ namespace Cw6
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ILoggingService, FileLoggingService>();
-            services.AddScoped<IDbStudentService, MssqlDbStudentService>();
+            services.AddScoped<IStudentDbService, SqlDbService>();
             services.AddControllers();
 
             // Register the Swagger generator, defining Swagger documents
@@ -41,7 +41,7 @@ namespace Cw6
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbStudentService dbService)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStudentDbService dbService)
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -58,7 +58,7 @@ namespace Cw6
                 if (!context.Request.Headers.ContainsKey(IndexHeader))
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsync("Brak nagłówka z numerem indeksu!");
+                    await context.Response.WriteAsync("Brak naglowka z numerem indeksu!");
                     return;
                 }
 
